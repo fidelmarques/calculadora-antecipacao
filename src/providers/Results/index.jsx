@@ -5,20 +5,27 @@ import { ResponseContext } from "../Response";
 export const ResultsContext = createContext();
 
 export const ResultsProvider = ({ children }) => {
-  const { handleResponse } = useContext(ResponseContext);
+  const { handleResponse, isLoading } = useContext(ResponseContext);
 
   const [results, setResults] = useState({});
 
-  const postForm = (data) => {
-    api
+  const postForm = async (data) => {
+    isLoading(true);
+    await api
       .post("/", data)
       .then((response) => {
-        console.log(response);
-        handleResponse(response);
         setResults(response.data);
+        handleResponse(response.status);
+        console.log("THEN");
+        console.log(response);
       })
       .catch((err) => {
+        console.log("CATCH");
         console.log(err);
+        handleResponse(err.response.status);
+      })
+      .finally(() => {
+        isLoading(false);
       });
   };
 

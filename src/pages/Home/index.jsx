@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import { Form } from "../../components/Form";
 import { Results } from "../../components/Results";
+import { ResponseContext } from "../../providers/Response";
 import {
   MainContainer,
   MainHeader,
@@ -9,9 +11,11 @@ import {
 } from "./style";
 
 export const Home = () => {
+  const { isFormEnabled } = useContext(ResponseContext);
+
   return (
     <HomeContainer>
-      <MainContainer>
+      <MainContainer enableForm={isFormEnabled}>
         <MainHeader>
           <Title>Simule sua antecipação</Title>
         </MainHeader>

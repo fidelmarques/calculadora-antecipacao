@@ -1,11 +1,39 @@
-import { InputContainer } from "./style";
+import { useEffect, useState } from "react";
+import {
+  ErrorForm,
+  Fieldset,
+  InputContainer,
+  InputField,
+  RuleForm,
+} from "./style";
+import { MdAttachMoney } from "react-icons/md";
+import { FaBarcode, FaPercent } from "react-icons/fa";
+import { FiPercent } from "react-icons/fi";
+import { iconSelector } from "../../utils/iconSelector";
 
-export const FormSection = ({ text, label, rule, register, required }) => {
+export const FormSection = ({
+  text,
+  label,
+  rule,
+  register,
+  required,
+  errors = false,
+}) => {
+  const [inputData, setInputData] = useState(0);
+
+  useEffect(() => {
+    console.log(inputData);
+  }, [inputData]);
+
   return (
-    <InputContainer>
+    <Fieldset>
       <label>{text}</label>
-      <input {...register(label, { required })} />
-      {rule && <h2>{rule}</h2>}
-    </InputContainer>
+      <InputContainer>
+        {iconSelector(label)}
+        <InputField name={label} {...register(label, { required })} />
+      </InputContainer>
+      {(errors[label] && <ErrorForm>{errors[label].message}</ErrorForm>) ||
+        (rule && <RuleForm>{rule}</RuleForm>)}
+    </Fieldset>
   );
 };

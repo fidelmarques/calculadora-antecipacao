@@ -26,7 +26,7 @@ export const GlobalStyle = createGlobalStyle`
 
     }
 
-    h1, h2, ul, li, input, fieldset {
+    h1, h2, h3, h4, ul, li, input, fieldset, button {
         all: unset
     }
 `;

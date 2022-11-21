@@ -16,4 +16,8 @@ export const formInfo = [
 
 export const formDefaultValues = { amount: "", installments: "", mdr: "" };
 
-export const formShortValidationMessage = { amount: "Valor da venda válido." };
+export const formShortValidationMessage = {
+  amount: "Valor da venda válido.",
+  installments: "Número de parcelas válido.",
+  mdr: "Percentual de MDR válido.",
+};

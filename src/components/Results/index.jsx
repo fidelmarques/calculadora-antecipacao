@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { ResponseContext } from "../../providers/Response";
 import { ResultsContext } from "../../providers/Results";
 import {
@@ -7,26 +7,19 @@ import {
   ResetResultsButton,
   TextInfo,
 } from "./style";
-import { FcInfo, FcOk, FcClock, FcTodoList } from "react-icons/fc";
-import { BsCheck } from "react-icons/bs";
+import { FcInfo, FcOk, FcTodoList, FcHighPriority } from "react-icons/fc";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useFormContext } from "react-hook-form";
-import { ErrorMessage } from "@hookform/error-message";
-import { iconSelector } from "../../utils/iconSelector";
+import { ErrorMessages } from "../ErrorMessages";
 
 export const Results = () => {
   const { results } = useContext(ResultsContext);
-  const { success, info, error, loading, warning, resetStates } =
+  const { success, info, error, loading, warning, resetStates, returnToForm } =
     useContext(ResponseContext);
 
   const {
-    formState: { errors, isValid, dirtyFields },
+    formState: { errors },
   } = useFormContext();
-
-  useEffect(() => {
-    console.log(errors);
-    console.log(dirtyFields);
-  }, [errors]);
 
   return (
     <>
@@ -37,23 +30,12 @@ export const Results = () => {
             Após enviar o formulário, os valores da sua simulação serão exibidos
             aqui.
           </TextInfo>
-          {Object.entries(errors).map(([key, value]) => (
-            <p key={key}>
-              {key}: {value.message}
-            </p>
-          ))}
         </>
       )}
       {warning && (
         <>
           <FcTodoList size="2em" />
           <TextInfo>Validação dos campos</TextInfo>
-          {Object.entries(dirtyFields).map(([key, value]) => (
-            <p key={key}>
-              {iconSelector(key, isValid ? "green" : "red")}
-              {value}
-            </p>
-          ))}
           {Object.entries(errors).map(([key, value]) => (
             <p key={key}>
               {key}: {value.message}
@@ -98,7 +80,14 @@ export const Results = () => {
           </ResetResultsButton>
         </>
       )}
-      {error && <h1>erro!</h1>}
+      {error && (
+        <>
+          <FcHighPriority size="2em" />
+          <h1>Erro!</h1>
+          <ErrorMessages errors={errors} />
+          <ResetResultsButton onClick={returnToForm}>Voltar</ResetResultsButton>
+        </>
+      )}
     </>
   );
 };

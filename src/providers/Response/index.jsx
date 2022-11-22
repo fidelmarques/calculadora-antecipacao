@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
 
 export const ResponseContext = createContext();
 
@@ -12,21 +11,22 @@ export const ResponseProvider = ({ children }) => {
 
   const [isFormEnabled, setIsFormEnabled] = useState(true);
 
-  const {
-    formState: { isDirty },
-  } = useFormContext();
-
   useEffect(() => {
     checkForm();
   }, [success, error, loading]);
 
-  useEffect(() => {
-    setInfo(isDirty ? false : true);
-    setWarning(isDirty ? true : false);
-  }, [isDirty]);
-
   const checkForm = () => {
     setIsFormEnabled(!(success || error || loading));
+  };
+
+  const triggerError = () => {
+    setInfo(false);
+    setError(true);
+  };
+
+  const returnToForm = () => {
+    setError(false);
+    setInfo(true);
   };
 
   const resetStates = () => {
@@ -67,6 +67,8 @@ export const ResponseProvider = ({ children }) => {
         handleResponse,
         isLoading,
         resetStates,
+        triggerError,
+        returnToForm,
       }}
     >
       {children}

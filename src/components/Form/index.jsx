@@ -3,22 +3,22 @@ import { FormContainer, FormSubmitButton } from "./style";
 import { useFormContext } from "react-hook-form";
 import { useContext, useEffect } from "react";
 import { ResultsContext } from "../../providers/Results";
-import { formSchema } from "../../utils/formSchema";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { formInfo } from "../../utils/formInfo";
+import { ResponseContext } from "../../providers/Response";
 
 export const Form = () => {
   const { postForm } = useContext(ResultsContext);
+  const { triggerError } = useContext(ResponseContext);
+
   const { register, handleSubmit, reset, formState } = useFormContext();
+
+  const onError = () => {
+    triggerError();
+  };
 
   const onSubmit = (data) => {
     postForm(data);
   };
-
-  useEffect(() => {
-    console.log(formState);
-    console.log(formState.errors);
-  }, [formState]);
 
   useEffect(() => {
     if (formState.isSubmitSuccessful) {
@@ -27,7 +27,7 @@ export const Form = () => {
   }, [formState.isSubmitSuccessful]);
 
   return (
-    <FormContainer onSubmit={handleSubmit(onSubmit)}>
+    <FormContainer onSubmit={handleSubmit(onSubmit, onError)}>
       {formInfo.map((item, index) => (
         <FormSection
           key={index}
@@ -39,12 +39,7 @@ export const Form = () => {
           errors={formState.errors}
         />
       ))}
-      <FormSubmitButton
-        type="submit"
-        // disabled={!formState.isDirty || !formState.isValid}
-      >
-        Enviar
-      </FormSubmitButton>
+      <FormSubmitButton type="submit">Enviar</FormSubmitButton>
     </FormContainer>
   );
 };

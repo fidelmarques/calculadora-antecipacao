@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import styled from "styled-components";
 
 export const HomeContainer = styled.div`
@@ -56,7 +55,6 @@ export const AsideContainer = styled.aside`
     width: 100%;
 
     color: #71a8ed;
-    /* font-style: italic; */
   }
 `;
 

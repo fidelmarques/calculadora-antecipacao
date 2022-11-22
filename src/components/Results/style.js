@@ -55,3 +55,15 @@ export const ResetResultsButton = styled.button`
 
   cursor: pointer;
 `;
+
+export const WarningInfo = styled.span`
+  color: orange;
+  font-size: 1em;
+
+  display: flex;
+  align-items: center;
+
+  div {
+    width: 40px;
+  }
+`;
